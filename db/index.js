@@ -1,16 +1,18 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-var connection = mysql.createConnection({
-    user: process.env.user,
-    password: process.env.password,
-    host: process.env.host,
-    database: process.env.database
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'IstudyIn8',
+    database: 'CampusConnect'
 });
 
-try {
-    connection.connect(() => {
-        console.log("Connected to MySQL!")
-    })
-} catch(err) {
-    console.log(`MySQL connection failed: ${err}`)
-}
+// try {
+//     connection.connect(() => {
+//         console.log("Connected to MySQL!")
+//     })
+// } catch(err) {
+//     console.log(`MySQL connection failed: ${err}`)
+// }
+
+module.exports = connection
