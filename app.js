@@ -3,14 +3,14 @@ const morgan = require('morgan');
 require('./db');
 require('dotenv').config();
 
-const loginRouter = require('./routers/login')
+const authRouter = require('./routers/auth')
 
 const PORT = process.env.PORT;
 
 const app = express();
 app.use(morgan('dev'))
 app.use(express.json())
-app.use('/api', loginRouter)
+app.use('/api', authRouter)
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}...`)
