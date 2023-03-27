@@ -7,12 +7,4 @@ const connection = mysql.createConnection({
     database: 'CampusConnect'
 });
 
-// try {
-//     connection.connect(() => {
-//         console.log("Connected to MySQL!")
-//     })
-// } catch(err) {
-//     console.log(`MySQL connection failed: ${err}`)
-// }
-
 module.exports = connection
