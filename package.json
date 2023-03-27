@@ -1,0 +1,29 @@
+{
+  "name": "campusconnect-api",
+  "version": "1.0.0",
+  "description": "Backend for CampusConnect",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owayys/CampusConnect-API.git"
+  },
+  "author": "owayys",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owayys/CampusConnect-API/issues"
+  },
+  "homepage": "https://github.com/owayys/CampusConnect-API#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.22"
+  }
+}
