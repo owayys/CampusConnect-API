@@ -12,5 +12,5 @@ try {
         console.log("Connected to MySQL!")
     })
 } catch(err) {
-    console.log(`MySQL connected failed: ${err}`)
+    console.log(`MySQL connection failed: ${err}`)
 }
