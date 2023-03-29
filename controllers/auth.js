@@ -12,18 +12,22 @@ exports.userLogin = (req, res) => {
             else {
                 console.log(results)
                 if (results.length === 0) {
-                    res.sendStatus(401)
+                    res.json({code: 401});
                 }
                 else if (!results[0]) {
-                    res.sendStatus(401)
+                    res.json({code: 401});
                 }
                 else {
                     const hashed_password = eval(`results[0].password`);
                     bcrypt.compare(password, hashed_password, (err, comp_result) => {
                         if (comp_result) {
-                            res.sendStatus(200)
+                            connection.query(`SELECT soc_name FROM societies WHERE soc_id='${id}'`, (err, results) => {
+                                if (err) throw err;
+                                console.log(results)
+                                res.json({code: 200, name: results[0].soc_name});
+                            })
                         }
-                        else res.sendStatus(401)
+                        else res.json({code: 401});
                     })
                 }
             }
@@ -37,18 +41,22 @@ exports.userLogin = (req, res) => {
             else {
                 console.log(results)
                 if (results.length === 0) {
-                    res.sendStatus(401)
+                    res.json({code: 401});
                 }
                 else if (!results[0]) {
-                    res.sendStatus(401)
+                    res.json({code: 401});
                 }
                 else {
                     const hashed_password = eval(`results[0].password`);
                     bcrypt.compare(password, hashed_password, (err, comp_result) => {
                         if (comp_result) {
-                            res.sendStatus(200)
+                            connection.query(`SELECT s_name FROM students WHERE s_id='${id}'`, (err, results) => {
+                                if (err) throw err;
+                                console.log(id, results);
+                                res.json({code: 200, name: results[0].s_name});
+                            })
                         }
-                        else res.sendStatus(401)
+                        else res.json({code: 401});
                     })
                 }
             }
@@ -59,23 +67,24 @@ exports.userLogin = (req, res) => {
 }
 
 exports.userSignup = (req, res) => {
-    const {username, email, password} = req.body
+    const {name, email, password} = req.body
+    console.log(req.body)
 
     const id = parseInt(email.slice(0, 8));
 
     bcrypt.hash(password, 10, (err, hashed_password) => {
         if (err) throw err;
-        connection.query(`INSERT INTO students (s_name,s_id,password) VALUES ('${username}','${id}','${hashed_password}')`, (err, result) => {
+        connection.query(`INSERT INTO students (s_name,s_id,password) VALUES ('${name}','${id}','${hashed_password}')`, (err, result) => {
             if (err) {
                 if (err.code === 'ER_DUP_ENTRY') {
-                    res.send(err.code)
+                    res.json({code: err.code})
                 }
                 else {
                     throw err;
                 }
             }
             else {
-                res.sendStatus(200);
+                res.json({code: 200});
             }
         });
     })

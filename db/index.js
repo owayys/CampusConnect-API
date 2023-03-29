@@ -1,10 +1,11 @@
 const mysql = require('mysql2');
+require('dotenv').config();
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'IstudyIn8',
-    database: 'CampusConnect'
+    host: process.env.host,
+    user: process.env.user,
+    password: process.env.password,
+    database: process.env.database
 });
 
 module.exports = connection
