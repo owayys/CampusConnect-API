@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 var connection = require('./db/index');
+var socketio = require('socket.io')
 require('dotenv').config();
 
 const authRouter = require('./routers/auth')
@@ -18,10 +19,20 @@ app.use('/api/auth', authRouter)
 app.use('/api/event', eventRouter)
 app.use('/api/group', groupRouter)
 
-app.listen(PORT, () => {
+var server = app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}...`)
 
-    if(connection.state === 'disconnected'){
-        return respond(null, { status: 'fail', message: 'server down'});
+    if (connection.state === 'disconnected') {
+        return respond(null, { status: 'fail', message: 'server down' });
     }
 })
+
+var io = socketio(server);
+
+io.on("connection", socket => {
+    console.log("a user connected :D");
+    socket.on('message', (data) => {
+        console.log(`Message received: ${data}`);
+        socket.broadcast.emit('message', data);
+    });    
+});
