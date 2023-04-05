@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const authRouter = require('./routers/auth')
 const eventRouter = require('./routers/event')
-const groupRouter = require('./routers/group')
+const chatroomRouter = require('./routers/chatroom')
 
 const PORT = process.env.PORT;
 
@@ -17,7 +17,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/event', eventRouter)
-app.use('/api/group', groupRouter)
+app.use('/api/chatroom', chatroomRouter)
 
 var server = app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}...`)
