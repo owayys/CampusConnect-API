@@ -37,10 +37,7 @@ server.listen(PORT, () => {
 
 io.on("connection", (socket) => {
     console.log(io.of("/").adapter);
-    socket.on('location', (data) => {
-        console.log(`Message received: ${data}`);
-        socket.broadcast.emit('location', data);
-    });
+    
     socket.on("joinRoom", ({ username, room }) => {
         const user = userJoin(socket.id, username, room);
 
