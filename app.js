@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
     socket.on('location', (data) => {
         console.log(`Message received: ${data}`);
         socket.broadcast.emit('location', data);
-    });  
+    });
     socket.on("joinRoom", ({ username, room }) => {
         const user = userJoin(socket.id, username, room);
 
@@ -71,6 +71,11 @@ io.on("connection", (socket) => {
         io.to(user.room).emit("message", formatMessage(user.username, msg));
     });
 
+    socket.on('location', (data) => {
+        console.log(`Message received: ${data}`);
+        socket.broadcast.emit('location', data);
+    });
+
     // Runs when client disconnects
     socket.on("disconnect", () => {
         const user = userLeave(socket.id);
@@ -91,5 +96,5 @@ io.on("connection", (socket) => {
 });
 
 app.get('*', (req, res) => {
-    res.status(404).json({code: 404});
+    res.status(404).json({ code: 404 });
 });
