@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
     socket.on("joinRoom", ({ username, room }) => {
         const user = userJoin(socket.id, username, room);
 
+<<<<<<< Updated upstream
         socket.join(user.room);
 
         // Welcome current user
@@ -88,4 +89,12 @@ io.on("connection", (socket) => {
 
 app.get('*', (req, res) => {
     res.status(404).json({code: 404});
+=======
+io.on("connection", socket => {
+    console.log("a user connected :D");
+    socket.on('location', (data) => {
+        console.log(`Message received: ${data}`);
+        socket.broadcast.emit('location', data);
+    });    
+>>>>>>> Stashed changes
 });
