@@ -2,7 +2,7 @@ const { chatroomGetAll, chatroomCreate, chatroomMemberAdd, chatroomMemberRemove,
 
 const router = require('express').Router()
 
-router.get('/get', chatroomGetAll)
+router.post('/get', chatroomGetAll)
 router.post('/create', chatroomCreate)
 router.post('/member/add', chatroomMemberAdd)
 router.post('/member/remove', chatroomMemberRemove)

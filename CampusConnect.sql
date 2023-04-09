@@ -5,8 +5,38 @@ CREATE TABLE `chatrooms` (
   `name` tinytext NOT NULL,
   `description` tinytext NOT NULL,
   `icon` char(60) NOT NULL,
+  `isStudyGroup` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`chat_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `courses` (
+  `c_id` int NOT NULL AUTO_INCREMENT,
+  `c_code` varchar(20) NOT NULL,
+  `c_section` int NOT NULL,
+  `c_name` varchar(60) NOT NULL,
+  PRIMARY KEY (`c_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `groupmeets` (
+  `group_id` int NOT NULL,
+  `meet_day` enum('SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY') DEFAULT NULL,
+  `meet_time` time DEFAULT NULL,
+  KEY `group_id` (`group_id`),
+  CONSTRAINT `groupmeets_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `studygroups` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `map` (
+  `loc_id` int NOT NULL AUTO_INCREMENT,
+  `loc_name` varchar(60) NOT NULL,
+  `loc_coords` point NOT NULL,
+  PRIMARY KEY (`loc_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -55,5 +85,22 @@ CREATE TABLE `students` (
   `icon` char(20) DEFAULT NULL,
   `bio` tinytext,
   PRIMARY KEY (`s_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `studygroups` (
+  `group_id` int NOT NULL AUTO_INCREMENT,
+  `c_id` int NOT NULL,
+  `chat_id` int NOT NULL,
+  `loc_id` int NOT NULL,
+  `description` tinytext NOT NULL,
+  PRIMARY KEY (`group_id`),
+  KEY `c_id` (`c_id`),
+  KEY `chat_id` (`chat_id`),
+  KEY `loc_id` (`loc_id`),
+  CONSTRAINT `studygroups_ibfk_1` FOREIGN KEY (`c_id`) REFERENCES `courses` (`c_id`),
+  CONSTRAINT `studygroups_ibfk_2` FOREIGN KEY (`chat_id`) REFERENCES `chatrooms` (`chat_id`),
+  CONSTRAINT `studygroups_ibfk_3` FOREIGN KEY (`loc_id`) REFERENCES `map` (`loc_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
