@@ -13,6 +13,7 @@ const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require("./util/us
 const authRouter = require('./routers/auth')
 const eventRouter = require('./routers/event')
 const chatroomRouter = require('./routers/chatroom')
+const groupRouter = require('./routers/group')
 
 const PORT = process.env.PORT || 8080;
 
@@ -26,6 +27,7 @@ app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api/event', eventRouter)
 app.use('/api/chatroom', chatroomRouter)
+app.use('/api/group', groupRouter)
 
 server.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}...`)

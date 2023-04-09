@@ -48,7 +48,7 @@ exports.userLogin = (req, res) => {
                     const hashed_password = eval(`results[0].password`);
                     bcrypt.compare(password, hashed_password, (err, comp_result) => {
                         if (comp_result) {
-                            pool.query(`SELECT s_name FROM students WHERE s_id='${id}'`, (err, results) => {
+                            pool.query(`SELECT s_id, s_name FROM students WHERE s_id='${id}'`, (err, results) => {
                                 if (err) throw err;
                                 console.log(id, results);
                                 res.json({code: 200, name: results[0].s_name});

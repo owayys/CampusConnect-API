@@ -1,26 +1,26 @@
 var pool = require('../db/index');
 
 exports.chatroomGetAll = (req, res) => {
-    const {s_id} = req.body
+    const { s_id, isStudyGroup } = req.body
 
-    pool.query(`SELECT chatrooms.chat_id, name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id JOIN messages ON chatrooms.chat_id=messages.chat_id WHERE members.s_id=${s_id} ORDER BY sent LIMIT 1`, (err, results) => {
+    pool.query(`SELECT chatrooms.chat_id, name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id JOIN messages ON chatrooms.chat_id=messages.chat_id WHERE members.s_id=${s_id} AND isStudyGroup=${isStudyGroup} ORDER BY sent LIMIT 1`, (err, results) => {
         if (err) throw err;
         else {
             if (results.length === 0) {
-                res.json({code: 401});
+                res.json({ code: 401 });
             }
             else if (!results[0]) {
-                res.json({code: 401});
+                res.json({ code: 401 });
             }
             else {
-                res.json({code: 200, chatrooms: results});
+                res.json({ code: 200, chatrooms: results });
             }
         }
     });
 };
 
 exports.chatroomCreate = (req, res) => {
-    const {s_id, name, description, icon} = req.body
+    const { s_id, name, description, icon } = req.body
 
     pool.query(`INSERT INTO chatrooms (name, description, icon) VALUES ('${name}', '${description}', '${icon}'); SELECT LAST_INSERT_ID();`, (err, result) => {
         if (err) throw err;
@@ -29,9 +29,31 @@ exports.chatroomCreate = (req, res) => {
             pool.query(`INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s_id})`, (err, result) => {
                 if (err) throw err;
                 else {
-                    res.json({code: 200})
+                    res.json({ code: 200 })
                 }
             });
+        }
+    });
+};
+
+exports.chatroomMemberAdd = (req, res) => {
+    const { chat_id, s_id } = req.body
+
+    pool.query(`INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s_id})`, (err, result) => {
+        if (err) throw err;
+        else {
+            res.json({ code: 200 })
+        }
+    });
+};
+
+exports.chatroomMemberRemove = (req, res) => {
+    const { chat_id, s_id } = req.body
+
+    pool.query(`DELETE FROM members WHERE chat_id=${chat_id} AND s_id=${s_id}`, (err, result) => {
+        if (err) throw err;
+        else {
+            res.json({ code: 200 })
         }
     });
 };
@@ -42,7 +64,7 @@ exports.getMessages = (req, res) => {
     pool.query(`SELECT message_id, s_id, content, sent FROM messages WHERE chat_id=${chat_id} ORDER BY sent`, (err, result) => {
         if (err) throw err;
         else {
-            res.json({code: 200, messages: result});
+            res.json({ code: 200, messages: result });
         }
     });
 }
@@ -53,7 +75,7 @@ exports.sendMessage = (req, res) => {
     pool.query(`INSERT INTO messages (chat_id, s_id, content, sent) VALUES (${chat_id}, ${s_id}, '${content}', CURRENT_TIMESTAMP())`, (err, result) => {
         if (err) throw err;
         else {
-            res.json({code: 200})
+            res.json({ code: 200 })
         }
     });
 }
