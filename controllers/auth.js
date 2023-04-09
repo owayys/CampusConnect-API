@@ -51,7 +51,7 @@ exports.userLogin = (req, res) => {
                             pool.query(`SELECT s_id, s_name FROM students WHERE s_id='${id}'`, (err, results) => {
                                 if (err) throw err;
                                 console.log(id, results);
-                                res.json({code: 200, name: results[0].s_name});
+                                res.json({code: 200, name: results[0].s_name, id: results[0].s_id});
                             })
                         }
                         else res.json({code: 401});
