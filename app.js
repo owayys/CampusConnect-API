@@ -15,6 +15,7 @@ const eventRouter = require('./routers/event')
 const chatroomRouter = require('./routers/chatroom')
 const groupRouter = require('./routers/group')
 const schedRouter = require('./routers/schedule')
+const courseRouter = require('./routers/course')
 
 const PORT = process.env.PORT || 8080;
 
@@ -30,6 +31,7 @@ app.use('/api/event', eventRouter)
 app.use('/api/chatroom', chatroomRouter)
 app.use('/api/group', groupRouter)
 app.use('/api/sched', schedRouter)
+app.use('/api/course', courseRouter)
 
 server.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}...`)

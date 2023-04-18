@@ -1,8 +1,8 @@
 var pool = require('../db/index');
 
-exports.scheduleGetAll = (req, res) => {
+exports.courseGetAll = (req, res) => {
 
-    pool.query(`SELECT c_code, c_name, class_day, start_time, end_time FROM courses JOIN coursetimings ON courses.c_id = coursetimings.c_id;`, (err, results) => {
+    pool.query(`SELECT c_code, c_section, c_name FROM courses;`, (err, results) => {
         if (err) throw err;
         else {
             if (results.length === 0) {
