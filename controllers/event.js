@@ -1,7 +1,7 @@
 var pool = require('../db/index');
 
 exports.eventGetAll = (req, res) => {
-    pool.query(`SELECT * FROM event`, (err, result) => {
+    pool.query(`SELECT * FROM event JOIN map ON event.loc_id = map.loc_id;`, (err, result) => {
         if (err) throw err;
         else {
             res.json(result);
