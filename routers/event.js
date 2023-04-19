@@ -1,10 +1,8 @@
-const { eventOngoing, eventUpcoming, eventCompleted, eventGet, eventCreate, eventEdit, eventDelete } = require('../controllers/event')
+const { eventGet, eventCreate, eventEdit, eventDelete, eventGetAll } = require('../controllers/event')
 
 const router = require('express').Router()
 
-router.get('/ongoing', eventOngoing)
-router.get('/upcoming', eventUpcoming)
-router.get('/completed', eventCompleted)
+router.get('/getAll', eventGetAll)
 router.get('/get', eventGet)
 router.post('/create', eventCreate)
 router.post('/edit', eventEdit)
