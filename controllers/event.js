@@ -23,7 +23,7 @@ exports.eventGet = (req, res) => {
 exports.eventCreate = (req, res) => {
     const {soc_id, event_name, event_date, event_time, location, banner, info} = req.body;
 
-    pool.query(`INSERT INTO event (soc_id, event_name, status, event_date, event_time, location, banner, info) VALUES (${soc_id}, ${event_name},'UPCOMING' , ${event_date}, ${event_time}, ${location}, ${banner}, ${info})`, (err, result) => {
+    pool.query(`INSERT INTO event (soc_id, event_name, status, event_date, event_time, location, banner, info) VALUES ('${soc_id}', '${event_name}','UPCOMING' , '${event_date}', '${event_time}', '${location}', '${banner}', '${info}')`, (err, result) => {
         if (err) throw err;
         else {
             res.json(result);
