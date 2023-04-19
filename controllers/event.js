@@ -1,7 +1,7 @@
 var pool = require('../db/index');
 
 exports.eventGetAll = (req, res) => {
-    pool.query(`SELECT event.event_id, soc_id, event_name, status, event_date, TIME_FORMAT(event_time, '%h:%i %p'), location, banner, info, COUNT(events_going.s_id) AS attendees FROM event JOIN events_going ON event.event_id = events_going.event_id GROUP BY event.event_id;`, (err, result) => {
+    pool.query(`SELECT event.event_id, soc_id, event_name, status, event_date, TIME_FORMAT(event_time, '%h:%i %p'), location, banner, info, COUNT(events_going.s_id) AS attendees FROM event LEFT OUTER JOIN events_going ON event.event_id = events_going.event_id GROUP BY event.event_id;`, (err, result) => {
         if (err) throw err;
         else {
             res.json(result);
