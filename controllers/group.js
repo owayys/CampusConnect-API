@@ -45,7 +45,7 @@ exports.groupGetAll = (req, res) => {
 
 exports.groupCreate = (req, res) => {
     const { s_id, group_name, group_icon, c_id, meet_day, meet_time, location, description } = req.body
-    pool.query(`INSERT INTO chatrooms (name, description, icon, isStudyGroup) VALUES ('${group_name}', '${description}', '${group_icon}', 1); SELECT LAST_INSERT_ID();`, (err, result) => {
+    pool.query(`INSERT INTO chatrooms (isStudyGroup) VALUES (1); SELECT LAST_INSERT_ID();`, (err, result) => {
         if (err) {
             res.json({ error: err })
         } else {

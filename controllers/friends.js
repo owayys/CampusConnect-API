@@ -60,7 +60,23 @@ exports.acceptRequest = (req, res) => {
             res.json({ error: err })
         }
         else {
-            res.json({ code: 200 })
+            pool.query(`INSERT INTO chatrooms (isStudyGroup) VALUES (0); SELECT LAST_INSERT_ID();`, (err, result2) => {
+                let chat_id = result2[1][0]['LAST_INSERT_ID()']
+                if (err) {
+                    res.json({ error: err })
+                }
+                else {
+                    pool.query(`INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s1_id}); INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s2_id});`, (err, result2) => {
+                        let chat_id = result2[1][0]['LAST_INSERT_ID()']
+                        if (err) {
+                            res.json({ error: err })
+                        }
+                        else {
+                            res.json({ code: 200 })
+                        }
+                    });
+                }
+            });
         }
     });
 

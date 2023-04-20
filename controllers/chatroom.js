@@ -3,7 +3,7 @@ var pool = require('../db/index');
 exports.chatroomGetAll = (req, res) => {
     const { s_id, isStudyGroup } = req.body
 
-    pool.query(`SELECT chatrooms.chat_id, name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id LEFT OUTER JOIN messages ON chatrooms.chat_id=messages.chat_id WHERE members.s_id=${s_id} AND isStudyGroup=${isStudyGroup} ORDER BY sent`, (err, results) => {
+    pool.query(`SELECT chatrooms.chat_id, s_name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id JOIN students ON members.s_id=students.s_id LEFT OUTER JOIN messages ON chatrooms.chat_id=messages.chat_id WHERE members.s_id=${s_id} AND isStudyGroup=${isStudyGroup} ORDER BY sent`, (err, results) => {
         if (err) {
             res.json({ error: err })
         }
@@ -22,9 +22,9 @@ exports.chatroomGetAll = (req, res) => {
 };
 
 exports.chatroomCreate = (req, res) => {
-    const { s_id, name, description, icon } = req.body
+    const { s_id } = req.body
 
-    pool.query(`INSERT INTO chatrooms (name, description, icon) VALUES ('${name}', '${description}', '${icon}'); SELECT LAST_INSERT_ID();`, (err, result) => {
+    pool.query(`INSERT INTO chatrooms (isStudyGroup) VALUES (0); SELECT LAST_INSERT_ID();`, (err, result) => {
         if (err) {
             res.json({ error: err })
         }
