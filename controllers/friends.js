@@ -55,7 +55,22 @@ exports.acceptRequest = (req, res) => {
 
     const { s1_id, s2_id } = req.body
 
-    pool.query(`UPDATE friends SET accepted=1 WHERE s1_id=${s1_id} AND s2_id=${s2_id} OR s1_id=${s2_id} AND s2_id=${s1_id};`, (err, result) => {
+    pool.query(`UPDATE friends SET accepted=1 WHERE s1_id=${s1_id} AND s2_id=${s2_id};`, (err, result) => {
+        if (err) {
+            res.json({ error: err })
+        }
+        else {
+            res.json({ code: 200 })
+        }
+    });
+
+};
+
+exports.rejectRequest = (req, res) => {
+
+    const { s1_id, s2_id } = req.body
+
+    pool.query(`DELETE FROM friends WHERE s1_id=${s1_id} AND s2_id=${s2_id}`, (err, result) => {
         if (err) {
             res.json({ error: err })
         }
