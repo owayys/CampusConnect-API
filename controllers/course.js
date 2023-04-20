@@ -61,7 +61,7 @@ exports.getEnrolled = (req, res) => {
 
     const { s_id } = req.body
 
-    pool.query(`SELECT c_id, c_code, c_section, c_name FROM enrolled JOIN courses ON enrolled.c_id=courses.c_id WHERE s_id=${s_id}`, (err, results) => {
+    pool.query(`SELECT courses.c_id, c_code, c_section, c_name FROM enrolled JOIN courses ON enrolled.c_id=courses.c_id WHERE s_id=${s_id}`, (err, results) => {
         if (err) {
             res.json({ error: err })
         }
