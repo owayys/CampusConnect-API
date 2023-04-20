@@ -3,9 +3,9 @@ var pool = require('../db/index');
 exports.groupGetAll = (req, res) => {
     const { s_id } = req.body
 
-    pool.query(`SELECT studygroups.group_id, chatrooms.chat_id, name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id JOIN messages ON chatrooms.chat_id=messages.chat_id JOIN studygroups on studygroups.chat_id=chatrooms.chat_id WHERE members.s_id=${s_id} AND isStudyGroup=${1} ORDER BY sent LIMIT 1`, (err, results) => {
+    pool.query(`SELECT studygroups.group_id, chatrooms.chat_id, group_name, group_icon, content, sent FROM studygroups JOIN chatrooms ON studygroups.chat_id=chatrooms.chat_id JOIN groupmembers ON groupmembers.group_id=studygroups.group_id LEFT OUTER JOIN messages ON chatrooms.chat_id=messages.chat_id  WHERE groupmembers.s_id=${s_id} AND isStudyGroup=1 ORDER BY sent LIMIT 1`, (err, results) => {
         if (err) {
-            res.json({error: err})
+            res.json({ error: err })
         }
         else {
             if (results.length === 0) {
@@ -30,12 +30,20 @@ exports.groupCreate = (req, res) => {
         }
         else {
             const group_id = result[1][0]['LAST_INSERT_ID()']
-            pool.query(`INSERT INTO groupmeets (group_id, meet_day, meet_time) VALUES (${group_id}, '${meet_day}', '${meet_time}'); INSERT INTO groupmembers (group_id, s_id) VALUES (${group_id}, ${s_id}); INSERT INTO chatrooms (name, description, icon, isStudyGroup) VALUES ('${group_name}', '${description}', '${group_icon}', 1);`, (err, result) => {
+            pool.query(`INSERT INTO groupmeets (group_id, meet_day, meet_time) VALUES (${group_id}, '${meet_day}', '${meet_time}'); INSERT INTO groupmembers (group_id, s_id) VALUES (${group_id}, ${s_id}); INSERT INTO chatrooms (name, description, icon, isStudyGroup) VALUES ('${group_name}', '${description}', '${group_icon}', 1); SELECT LAST_INSERT_ID();`, (err, result) => {
                 if (err) {
                     res.json({ error: err })
                 }
                 else {
-                    res.json({ code: 200 })
+                    const chat_id = result[1][0]['LAST_INSERT_ID()']
+                    pool.query(`UPDATE studygroups SET chat_id=${chat_id} WHERE group_id=${group_id};`, (err, result) => {
+                        if (err) {
+                            res.json({ error: err })
+                        }
+                        else {
+                            res.json({ code: 200 })
+                        }
+                    });
                 }
             });
         }
