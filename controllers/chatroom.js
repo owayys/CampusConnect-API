@@ -3,7 +3,7 @@ var pool = require('../db/index');
 exports.chatroomGetAll = (req, res) => {
     const { s_id, isStudyGroup } = req.body
 
-    pool.query(`SELECT chatrooms.chat_id, s_name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id JOIN students ON members.s_id=students.s_id LEFT OUTER JOIN messages ON chatrooms.chat_id=messages.chat_id WHERE members.s_id=${s_id} AND isStudyGroup=${isStudyGroup} ORDER BY sent`, (err, results) => {
+    pool.query(`SELECT chatrooms.chat_id, s_name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id JOIN students ON members.s_id=students.s_id LEFT OUTER JOIN messages ON chatrooms.chat_id=messages.chat_id WHERE members.s_id=${s_id} AND isStudyGroup=${isStudyGroup} GROUP BY chatrooms.chat_id ORDER BY sent;`, (err, results) => {
         if (err) {
             res.json({ error: err })
         }
