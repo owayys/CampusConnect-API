@@ -5,8 +5,8 @@ exports.interestsGet = (req, res) => {
 
     pool.query(`SELECT interest FROM interests WHERE s_id=${s_id}`, (err, results) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
             if (results.length === 0) {
                 res.json({ code: 401 });
@@ -25,12 +25,12 @@ exports.addInterest = (req, res) => {
 
     const { s_id, interest } = req.body
 
-    pool.query(`INSERT INTO interests (s_id, interest) VALUES (${s_id}, ${interest})`, (err, result) => {
+    pool.query(`INSERT INTO interests (s_id, interest) VALUES (${s_id}, '${interest}')`, (err, result) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
-            res.json({code: 200})
+            res.json({ code: 200 })
         }
     });
 
@@ -40,12 +40,12 @@ exports.removeInterest = (req, res) => {
 
     const { s_id, interest } = req.body
 
-    pool.query(`DELETE FROM interests WHERE s_id=${s_id} AND interest=${interest}`, (err, result) => {
+    pool.query(`DELETE FROM interests WHERE s_id=${s_id} AND interest='${interest}'`, (err, result) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
-            res.json({code: 200})
+            res.json({ code: 200 })
         }
     });
 
