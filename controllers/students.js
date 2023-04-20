@@ -3,7 +3,7 @@ var pool = require('../db/index');
 exports.studentsGetAll = (req, res) => {
     const { s_id } = req.body
 
-    pool.query(`SELECT s_id, s_name FROM students;`, (err, results) => {
+    pool.query(`SELECT s_id, s_name, icon FROM students;`, (err, results) => {
         if (err) {
             res.json({ error: err })
         }
