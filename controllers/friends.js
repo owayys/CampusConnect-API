@@ -67,7 +67,6 @@ exports.acceptRequest = (req, res) => {
                 }
                 else {
                     pool.query(`INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s1_id}); INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s2_id});`, (err, result2) => {
-                        let chat_id = result2[1][0]['LAST_INSERT_ID()']
                         if (err) {
                             res.json({ error: err })
                         }
