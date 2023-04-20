@@ -22,15 +22,22 @@ exports.groupGetAll = (req, res) => {
 };
 
 exports.groupCreate = (req, res) => {
-    const { loc } = req.body
-    console.log(loc)
+    const { group_name, group_icon, c_id, meet_day, meet_time, location, description } = req.body
 
-    pool.query(`SELECT loc_id FROM map WHERE loc_name=${loc}`, (err, result) => {
+    pool.query(`INSERT INTO studygroups (group_name, group_icon, c_id, location, description) VALUES ('${group_name}', '${group_icon}', ${c_id}, '${location}', '${description}'); SELECT LAST_INSERT_ID();`, (err, result) => {
         if (err) {
-            res.json({error: err})
+            res.json({ error: err })
         }
         else {
-            res.json(result)
+            const group_id = result[1][0]['LAST_INSERT_ID()']
+            pool.query(`INSERT INTO groupmeets (group_id, meet_day, meet_time) VALUES (${group_id}, '${meet_day}', '${meet_time}')`, (err, result) => {
+                if (err) {
+                    res.json({ error: err })
+                }
+                else {
+                    res.json({ code: 200 })
+                }
+            });
         }
     });
 };
