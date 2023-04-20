@@ -47,3 +47,20 @@ exports.groupCreate = (req, res) => {
         }
     })
 };
+
+exports.groupJoin = (req, res) => {
+    const { s_id, group_id } = req.body
+    pool.query(`INSERT INTO groupmembers (group_id, s_id) VALUES (${group_id}, ${s_id})`, (err, result) => {
+        if (err) {
+            res.json({ error: err })
+        } else {
+            if (err) {
+                res.json({ error: err })
+            }
+            else {
+                res.json({ code: 200})
+            }
+        }
+    })
+};
+
