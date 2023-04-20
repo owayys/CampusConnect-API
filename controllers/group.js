@@ -1,6 +1,6 @@
 var pool = require('../db/index');
 
-exports.groupGetAll = (req, res) => {
+exports.groupGet = (req, res) => {
     const { s_id } = req.body
 
     pool.query(`SELECT studygroups.group_id, chatrooms.chat_id, group_name, group_icon, content, sent FROM studygroups JOIN chatrooms ON studygroups.chat_id=chatrooms.chat_id JOIN groupmembers ON groupmembers.group_id=studygroups.group_id LEFT OUTER JOIN messages ON chatrooms.chat_id=messages.chat_id  WHERE groupmembers.s_id=${s_id} AND isStudyGroup=1 ORDER BY sent`, (err, results) => {
@@ -16,6 +16,28 @@ exports.groupGetAll = (req, res) => {
             }
             else {
                 res.json({ code: 200, chatrooms: results });
+            }
+        }
+    });
+};
+
+
+exports.groupGetAll = (req, res) => {
+    const { s_id } = req.body
+
+    pool.query(`SELECT * FROM studygroups;`, (err, results) => {
+        if (err) {
+            res.json({ error: err })
+        }
+        else {
+            if (results.length === 0) {
+                res.json({ code: 401 });
+            }
+            else if (!results[0]) {
+                res.json({ code: 401 });
+            }
+            else {
+                res.json({ code: 200, groups: results });
             }
         }
     });
