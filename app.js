@@ -51,17 +51,17 @@ io.on("connection", (socket) => {
     socket.on("joinRoom", ({ username, room }) => {
         const user = userJoin(socket.id, username, room);
 
-        socket.join(user.room);
+        socket.join(room);
 
         // Welcome current user
         socket.emit("message", formatMessage('bot', "Welcome to ChatCord!"));
 
         // Broadcast when a user connects
         socket.broadcast
-            .to(user.room)
+            .to(room)
             .emit(
                 "message",
-                formatMessage('bot', `${user.username} has joined the chat`)
+                formatMessage('bot', `${username} has joined the chat`)
             );
 
         // Send users and room info
@@ -69,6 +69,10 @@ io.on("connection", (socket) => {
             room: user.room,
             users: getRoomUsers(user.room),
         });
+    });
+
+    socket.on("leaveRoom", ({ username, room }) => {
+        socket.leave(room);
     });
 
     // Listen for chatMessage
