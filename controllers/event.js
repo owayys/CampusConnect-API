@@ -63,3 +63,16 @@ exports.eventDelete = (req, res) => {
         }
     });
 }
+
+exports.eventGoing = (req, res) => {
+    const { s_id, event_id } = req.body;
+
+    pool.query(`INSERT INTO events_going (s_id, event_id) VALUES (${s_id}, ${event_id})`, (err, result) => {
+        if (err) {
+            res.json({ error: err })
+        }
+        else {
+            res.json({ code: 200 });
+        }
+    });
+}
