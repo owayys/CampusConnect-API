@@ -16,6 +16,7 @@ const chatroomRouter = require('./routers/chatroom')
 const groupRouter = require('./routers/group')
 const courseRouter = require('./routers/course')
 const friendRouter = require('./routers/friends')
+const studentRouter = require('./routers/students')
 const interestRouter = require('./routers/interests')
 
 const PORT = process.env.PORT || 8080;
@@ -33,6 +34,7 @@ app.use('/api/chatroom', chatroomRouter)
 app.use('/api/group', groupRouter)
 app.use('/api/course', courseRouter)
 app.use('/api/friend', friendRouter)
+app.use('/api/student', studentRouter)
 app.use('/api/interest', interestRouter)
 
 server.listen(PORT, () => {
