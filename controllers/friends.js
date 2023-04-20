@@ -25,7 +25,7 @@ exports.getRequests = (req, res) => {
 
     const { s_id } = req.body
 
-    pool.query(`SELECT s_id, s_name, school, graduation_year, icon, bio FROM students WHERE s_id IN (SELECT s1_id AS friends_list FROM friends WHERE s2_id=${s_id} AND accepted=0)`, (err, result) => {
+    pool.query(`SELECT s_id, s_name, school, graduation_year, icon, bio FROM students WHERE s2_id=${s_id} AND accepted=0`, (err, result) => {
         if (err) {
             res.json({ error: err })
         }
