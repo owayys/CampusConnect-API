@@ -25,7 +25,7 @@ exports.groupGet = (req, res) => {
 exports.groupGetAll = (req, res) => {
     const { s_id } = req.body
 
-    pool.query(`SELECT studygroups.group_id, group_icon, group_name, chat_id, c_name, location, description, meet_day, meet_time, COUNT(s_id) AS membercount FROM studygroups JOIN groupmembers ON studygroups.group_id=groupmembers.group_id JOIN courses ON studygroups.c_id=courses.c_id JOIN groupmeets ON studygroups.group_id=groupmeets.group_id GROUP BY studygroups.group_id;`, (err, results) => {
+    pool.query(`SELECT studygroups.group_id, group_icon, group_name, chat_id, c_name, location, description, meet_day, meet_time, COUNT(s_id) AS membercount FROM studygroups JOIN groupmembers ON studygroups.group_id=groupmembers.group_id JOIN courses ON studygroups.c_id=courses.c_id JOIN groupmeets ON studygroups.group_id=groupmeets.group_id WHERE groupmembers.s_id!=${s_id} GROUP BY studygroups.group_id;`, (err, results) => {
         if (err) {
             res.json({ error: err })
         }

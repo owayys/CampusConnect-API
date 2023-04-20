@@ -3,7 +3,7 @@ const { groupGetAll, groupCreate, groupJoin, groupGet } = require('../controller
 const router = require('express').Router()
 
 router.post('/get', groupGet)
-router.get('/get', groupGetAll)
+router.post('/getAll', groupGetAll)
 router.post('/create', groupCreate)
 router.post('/join', groupJoin)
 
