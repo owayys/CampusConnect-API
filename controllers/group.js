@@ -30,7 +30,7 @@ exports.groupCreate = (req, res) => {
         }
         else {
             const group_id = result[1][0]['LAST_INSERT_ID()']
-            pool.query(`INSERT INTO groupmeets (group_id, meet_day, meet_time) VALUES (${group_id}, '${meet_day}', '${meet_time}'); INSERT INTO groupmembers (group_id, s_id) VALUES (${group_id}, ${s_id});`, (err, result) => {
+            pool.query(`INSERT INTO groupmeets (group_id, meet_day, meet_time) VALUES (${group_id}, '${meet_day}', '${meet_time}'); INSERT INTO groupmembers (group_id, s_id) VALUES (${group_id}, ${s_id}); INSERT INTO chatrooms (name, description, icon, isStudyGroup) VALUES ('${group_name}', '${description}', '${group_icon}', 1);`, (err, result) => {
                 if (err) {
                     res.json({ error: err })
                 }
