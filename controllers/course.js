@@ -40,8 +40,8 @@ exports.postEnrolled = (req, res) => {
 
     const { s_id, courses } = req.body
 
-    courses.map((c_id) => {
-        pool.query(`INSERT INTO enrolled (s_id, c_id) VALUES (${s_id}, ${c_id})`, (err, results) => {
+    courses.map((course) => {
+        pool.query(`INSERT INTO enrolled (s_id, c_id) VALUES (${s_id}, ${course.c_id})`, (err, results) => {
             if (err) throw err;
             else {
                 res.json({code: 200})
