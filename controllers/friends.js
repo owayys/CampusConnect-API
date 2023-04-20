@@ -30,7 +30,7 @@ exports.getRequests = (req, res) => {
             res.json({ error: err })
         }
         else {
-            res.json({ code: 200 })
+            res.json({ code: 200, requests: result })
         }
     });
 
