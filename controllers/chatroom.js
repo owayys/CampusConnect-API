@@ -71,7 +71,7 @@ exports.chatroomMemberRemove = (req, res) => {
 exports.getMessages = (req, res) => {
     const { chat_id } = req.body;
 
-    pool.query(`SELECT message_id, s_id, content, sent FROM messages WHERE chat_id=${chat_id} ORDER BY sent`, (err, result) => {
+    pool.query(`SELECT message_id, messages.s_id, s_name, content, sent FROM messages JOIN students ON messages.s_id=students.s_id WHERE chat_id=${chat_id} ORDER BY sent`, (err, result) => {
         if (err) {
             res.json({ error: err })
         }
