@@ -23,6 +23,29 @@ exports.groupGetAll = (req, res) => {
 
 exports.groupCreate = (req, res) => {
     const { s_id, group_name, group_icon, c_id, meet_day, meet_time, location, description } = req.body
+    pool.query(`INSERT INTO chatrooms (name, description, icon, isStudyGroup) VALUES ('${group_name}', '${description}', '${group_icon}', 1); SELECT LAST_INSERT_ID();`, (err, result) => {
+        if (err) {
+            res.json({ error: err })
+        } else {
+            const chat_id = result[1][0]['LAST_INSERT_ID()']
+            pool.query(`INSERT INTO studygroups (group_name, chat_id, group_icon, c_id, location, description) VALUES ('${group_name}', ${chat_id}, '${group_icon}', ${c_id}, '${location}', '${description}'); SELECT LAST_INSERT_ID();`, (err, result) => {
+                if (err) {
+                    res.json({ error: err })
+                }
+                else {
+                    const group_id = result[1][0]['LAST_INSERT_ID()']
+                    pool.query(`INSERT INTO groupmeets (group_id, meet_day, meet_time) VALUES (${group_id}, '${meet_day}', '${meet_time}'); INSERT INTO groupmembers (group_id, s_id) VALUES (${group_id}, ${s_id});`, (err, result) => {
+                        if (err) {
+                            res.json({ error: err })
+                        }
+                        else {
+                            res.json({ code: 200})
+                        }
+                    });
+                }
+            });
+        }
+    })
 
     pool.query(`INSERT INTO studygroups (group_name, group_icon, c_id, location, description) VALUES ('${group_name}', '${group_icon}', ${c_id}, '${location}', '${description}'); SELECT LAST_INSERT_ID();`, (err, result) => {
         if (err) {
@@ -35,15 +58,7 @@ exports.groupCreate = (req, res) => {
                     res.json({ error: err })
                 }
                 else {
-                    const chat_id = result[1][0]['LAST_INSERT_ID()']
-                    pool.query(`UPDATE studygroups SET chat_id=${chat_id} WHERE group_id=${group_id};`, (err, result) => {
-                        if (err) {
-                            res.json({ error: err })
-                        }
-                        else {
-                            res.json({ code: 200 })
-                        }
-                    });
+                    res.json({ code: 200})
                 }
             });
         }
