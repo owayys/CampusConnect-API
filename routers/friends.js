@@ -3,8 +3,8 @@ const { sendRequest, acceptRequest, friendsGetAll, getRequests } = require('../c
 const router = require('express').Router()
 
 router.post('/get', friendsGetAll)
-router.post('request/get', getRequests)
-router.post('request/send', sendRequest)
-router.post('request/accept', acceptRequest)
+router.post('/request/get', getRequests)
+router.post('/request/send', sendRequest)
+router.post('/request/accept', acceptRequest)
 
 module.exports = router
