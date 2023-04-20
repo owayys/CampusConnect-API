@@ -5,8 +5,8 @@ exports.chatroomGetAll = (req, res) => {
 
     pool.query(`SELECT chatrooms.chat_id, name, icon, content, sent FROM chatrooms JOIN members ON chatrooms.chat_id=members.chat_id LEFT OUTER JOIN messages ON chatrooms.chat_id=messages.chat_id WHERE members.s_id=${s_id} AND isStudyGroup=${isStudyGroup} ORDER BY sent`, (err, results) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
             if (results.length === 0) {
                 res.json({ code: 401 });
@@ -26,14 +26,14 @@ exports.chatroomCreate = (req, res) => {
 
     pool.query(`INSERT INTO chatrooms (name, description, icon) VALUES ('${name}', '${description}', '${icon}'); SELECT LAST_INSERT_ID();`, (err, result) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
             const chat_id = result[1][0]['LAST_INSERT_ID()']
             pool.query(`INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s_id})`, (err, result) => {
                 if (err) {
-res.json({error: err})
-}
+                    res.json({ error: err })
+                }
                 else {
                     res.json({ code: 200 })
                 }
@@ -47,8 +47,8 @@ exports.chatroomMemberAdd = (req, res) => {
 
     pool.query(`INSERT INTO members (chat_id, s_id) VALUES (${chat_id}, ${s_id})`, (err, result) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
             res.json({ code: 200 })
         }
@@ -60,8 +60,8 @@ exports.chatroomMemberRemove = (req, res) => {
 
     pool.query(`DELETE FROM members WHERE chat_id=${chat_id} AND s_id=${s_id}`, (err, result) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
             res.json({ code: 200 })
         }
@@ -73,8 +73,8 @@ exports.getMessages = (req, res) => {
 
     pool.query(`SELECT message_id, s_id, content, sent FROM messages WHERE chat_id=${chat_id} ORDER BY sent`, (err, result) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
             res.json({ code: 200, messages: result });
         }
@@ -86,8 +86,8 @@ exports.sendMessage = (req, res) => {
 
     pool.query(`INSERT INTO messages (chat_id, s_id, content, sent) VALUES (${chat_id}, ${s_id}, '${content}', CURRENT_TIMESTAMP())`, (err, result) => {
         if (err) {
-res.json({error: err})
-}
+            res.json({ error: err })
+        }
         else {
             res.json({ code: 200 })
         }
