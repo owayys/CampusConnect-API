@@ -26,6 +26,8 @@ exports.userLogin = (req, res) => {
                                 if (err) {
                                     res.json({ error: err })
                                 }
+                                console.log(results)
+                                res.json({ code: 200, name: results[0].soc_name });
                             })
                         }
                         else res.json({ code: 401 });
