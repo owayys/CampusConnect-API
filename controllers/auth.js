@@ -25,9 +25,10 @@ exports.userLogin = (req, res) => {
                             pool.query(`SELECT soc_name FROM societies WHERE soc_id='${id}'`, (err, results) => {
                                 if (err) {
                                     res.json({ error: err })
+                                } else {
+                                    console.log(results)
+                                    res.json({ code: 200, name: results[0].soc_name });
                                 }
-                                console.log(results)
-                                res.json({ code: 200, name: results[0].soc_name });
                             })
                         }
                         else res.json({ code: 401 });
